@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A股ETF智能投顾系统</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><span class="ear ear-left"></span><span class="ear ear-right"></span><span class="brand-core">ETF</span></div>
+        <div><p class="eyebrow">Neko Advisor Lab</p><h1>A股ETF智能投顾系统</h1></div>
+      </div>
+      <div class="panel compact"><h2>当前用户</h2><p id="userName">演示用户</p><p class="muted" id="riskBadge">风险画像加载中...</p></div>
+      <div class="panel compact"><h2>数据源状态</h2><p class="muted" id="dataSourceText">检测中...</p><p class="muted" id="newsSourceText">新闻源检测中...</p><p class="muted" id="modelProviderText">模型检测中...</p></div>
+      <div class="panel compact"><h2>操作入口</h2><button class="ghost-btn" data-scroll-target="riskSection">风险测评</button><button class="ghost-btn" data-scroll-target="explorerSection">ETF搜索</button><button class="ghost-btn" data-scroll-target="analysisSection">智能分析</button><button class="ghost-btn" data-scroll-target="chatSection">多轮问答</button></div>
+      <div class="panel compact"><h2>系统说明</h2><p class="muted">系统已接入真实量价、新闻、基本面和 Alpha 因子链路，分析与问答均由大模型直接生成。</p></div>
+    </aside>
+    <main class="content">
+      <section class="hero-card">
+        <div class="hero-copy">
+          <p class="eyebrow">Multi-Expert ETF Advisor</p>
+          <h2>把风险测评、ETF 分析、专家协同和投顾问答连成一个完整闭环</h2>
+          <p>围绕A股ETF建立“五专家协作”投顾系统。你可以先完成风险评估问卷，再查看ETF报告，并在下方与智能投顾进行对话，追问风险、仓位和机会等。</p>
+          <div class="hero-actions">
+            <button class="primary-btn" data-scroll-target="riskSection">开始风险测评</button>
+            <button class="ghost-btn" data-scroll-target="explorerSection">查看ETF</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="cat-card cat-market">市场专家</div>
+          <div class="cat-card cat-news">新闻分析师</div>
+          <div class="cat-card cat-alpha">Alpha分析师</div>
+          <div class="cat-card cat-fundamental">基本面分析师</div>
+          <div class="cat-card cat-general">通用专家</div>
+        </div>
+      </section>
+      <section class="panel" id="featuredSection"><div class="section-head"><div><p class="eyebrow">Featured ETFs</p><h2>重点 ETF</h2></div></div><div class="card-grid" id="featuredEtfs"></div></section>
+      <section class="panel" id="riskSection"><div class="section-head"><div><p class="eyebrow">Risk Profile</p><h2>风险测评</h2></div><div class="summary-box"><strong id="riskLevelText">平衡型</strong><span id="riskSummaryText">请先完成风险测评。</span></div></div><form class="risk-form" id="riskForm"><label>年龄区间<select name="age_range"><option>18-25</option><option selected>26-35</option><option>36-45</option><option>46-55</option><option>55+</option></select></label><label>投资经验<select name="investment_experience"><option>无经验</option><option>1年以内</option><option selected>1-3年</option><option>3-5年</option><option>5年以上</option></select></label><label>回撤容忍度<select name="risk_tolerance"><option>可接受5%以内回撤</option><option>可接受5%-10%回撤</option><option selected>可接受10%-15%回撤</option><option>可接受15%-20%回撤</option><option>可接受20%以上回撤</option></select></label><label>投资目标<select name="investment_goal"><option>保值</option><option selected>稳健增值</option><option>追求超额收益</option><option>追求高弹性成长</option></select></label><label>持有周期<select name="holding_period"><option>短期</option><option selected>中期</option><option>长期</option></select></label><label>偏好方向<select name="sector_preference"><option selected>宽基</option><option>红利</option><option>成长</option><option>行业</option><option>科技</option></select></label><label>流动性需求<select name="liquidity_need"><option>高</option><option selected>中等</option><option>低</option></select></label><button class="primary-btn" type="submit">生成风险画像</button></form></section>
+      <section class="panel" id="explorerSection"><div class="section-head"><div><p class="eyebrow">ETF Explorer</p><h2>ETF 搜索</h2></div><div class="search-bar"><input id="searchInput" type="text" placeholder="输入ETF代码、名称或主题，例如 510300 / 创业板 / 通信" /><select id="categoryFilter"><option value="">全部类型</option><option value="宽基">宽基</option><option value="行业">行业</option><option value="策略">策略</option><option value="债券">债券</option><option value="货币">货币</option><option value="跨境">跨境</option><option value="商品">商品</option></select><button class="primary-btn" id="searchBtn">搜索</button></div></div><div class="table-wrap"><table><thead><tr><th>代码</th><th>名称</th><th>分类</th><th>主题</th><th>风险</th><th>操作</th></tr></thead><tbody id="etfTableBody"></tbody></table></div></section>
+      <section class="analysis-layout" id="analysisSection">
+        <section class="panel analysis-main">
+          <div class="section-head"><div><p class="eyebrow">Smart Analysis</p><h2>ETF 智能分析</h2></div><div id="selectedEtfBadge" class="pill">尚未选择 ETF</div></div>
+          <div id="analysisPlaceholder" class="empty-state">先在上方选择一只 ETF，再生成报告。</div>
+          <div id="analysisContent" class="hidden">
+            <div class="metrics-grid" id="metricCards"></div>
+            <div class="sparkline-card">
+              <div class="section-head tight">
+                <h3>近40日走势</h3>
+                <div class="action-row"><button class="ghost-btn" id="refreshQuoteBtn">刷新行情</button><button class="ghost-btn" id="refreshNewsBtn">刷新新闻</button><button class="ghost-btn" id="refreshFundamentalBtn">刷新基本面</button><button class="ghost-btn" id="refreshFactorBtn">刷新因子</button><button class="primary-btn" id="generateReportBtn">生成报告</button></div>
+              </div>
+              <div id="syncProgress" class="sync-progress hidden" aria-live="polite">
+                <div class="progress-meta"><strong id="syncProgressTitle">正在刷新...</strong><span id="syncProgressPercent">0%</span></div>
+                <div class="progress-bar-track"><div id="syncProgressBar" class="progress-bar-fill"></div></div>
+                <p class="muted" id="syncProgressDetail">系统正在连接实时数据源，请稍候。</p>
+              </div>
+              <svg id="sparkline" viewBox="0 0 500 160" preserveAspectRatio="none"></svg>
+              <p class="muted" id="syncFeedback"></p>
+            </div>
+            <div class="card-grid" id="expertCards"></div>
+          </div>
+        </section>
+        <section class="panel report-panel">
+          <div class="section-head tight"><div><p class="eyebrow">Report Center</p><h2>报告中心</h2></div><button class="ghost-btn" id="downloadReportBtn" disabled>下载报告</button></div>
+          <div id="reportSummary" class="report-summary">生成分析报告后，这里会展示摘要和下载入口。</div>
+          <section class="report-history-shell">
+            <div class="report-history-toolbar">
+              <div><p class="eyebrow">Saved Reports</p><h3>历史报告</h3></div>
+              <div class="report-toolbar-actions"><span id="reportCountBadge" class="pill small-pill">0 份</span><button class="ghost-btn" id="toggleReportHistoryBtn">折叠列表</button></div>
+            </div>
+            <div id="reportHistory" class="report-history"></div>
+          </section>
+        </section>
+      </section>
+      <section class="panel" id="chatSection"><div class="section-head"><div><p class="eyebrow">Advisor Chat</p><h2>多轮投顾问答</h2></div><button class="ghost-btn" id="newChatBtn">为当前ETF开启会话</button></div><div class="chat-layout"><div id="chatMessages" class="chat-messages"><div class="message assistant"><div class="message-meta">通用专家</div><div class="message-body">选择 ETF 并开启会话后，你可以继续问我“适合加仓吗”“主要风险是什么”“最近新闻怎么看”等问题。</div></div></div><form class="chat-form" id="chatForm"><textarea id="chatInput" rows="3" placeholder="请输入你的问题"></textarea><button class="primary-btn" type="submit">发送</button></form></div></section>
+    </main>
+  </div>
+  <script src="/static/js/app.js" defer></script>
+</body>
+</html>
